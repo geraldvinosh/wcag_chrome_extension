@@ -1,0 +1,39 @@
+{
+  "name": "ADA Compliance Check",
+  "version": "1.0",
+  "description": "Check for ADA compliance!",
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "webNavigation",
+    "declarativeContent",
+    "storage",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [ "background.js" ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": [ "<all_urls>" ],
+      "js": [ "contentmain.js" ]
+    },
+    {
+      "matches": [ "*://*.bankofamerica.com/" ], //set it only subdomain "https://*.google.com/" <all_urls>
+      "js": [ "contentsub.js" ],
+      "all_frames": true
+    }
+  ],
+
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/ada16.png",
+      "32": "images/ada32.png",
+      "48": "images/ada64.png",
+      "128": "images/ada128.png"
+    }
+  },
+  "manifest_version": 2
+}
