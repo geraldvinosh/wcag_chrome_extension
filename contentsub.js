@@ -12,6 +12,7 @@ window.addEventListener("message", function (event) {
         //console.log(frames[0].document.referrer);
         //console.log(frames[0].document.documentURI);
         //console.log(frames[0].document.getElementsByTagName("html").length);
+        //test
         for (var i = 0; i < window.frames.length; i++) {
             if (domArray) {
                 console.log(window.frames[i]);
