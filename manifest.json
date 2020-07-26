@@ -20,7 +20,7 @@
       "js": [ "contentmain.js" ]
     },
     {
-      "matches": [ "*://*.bankofamerica.com/" ], //set it only subdomain "https://*.google.com/" <all_urls>
+      "matches": [ "<all_urls>" ], //set it only subdomain "https://*.google.com/" <all_urls>
       "js": [ "contentsub.js" ],
       "all_frames": true
     }
