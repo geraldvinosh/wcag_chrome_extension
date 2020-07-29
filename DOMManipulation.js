@@ -8,7 +8,7 @@ function GetDOMElements(childElements, parentXpath) {
     for (var i = 0; i < childElements.length; i++) {
         
         if (childElements[i].tagName != undefined) {
-            console.log("tagname:" + childElements[i].tagName);
+            //console.log("tagname:" + childElements[i].tagName);
             var previousSiblingArray = [];
             //console.log(childElements[i].previousElementSibling);
             var previousElementSibling = childElements[i].previousElementSibling;

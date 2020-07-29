@@ -24,33 +24,33 @@ function ValidateElement(domElement) {
         switch (tagType) {
             case "html":
                 if (elementAttributes.indexOf("lang") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "HTML Missing language attribute", "ElementType": tagType });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "HTML Missing language attribute", "ElementType": tagType ,"ValidationId":1});
                 }
                 break;
             case "img":
                 if (elementAttributes.indexOf("alt") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "IMAGE Missing alt text", "ElementType": tagType });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "IMAGE Missing alt text", "ElementType": tagType,"ValidationId": 1 });
 
                 }
                 break;
             case "label":
                 if (elementAttributes.indexOf("for") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "LABEL Missing for text", "ElementType": tagType });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "LABEL Missing for text", "ElementType": tagType, "ValidationId": 1 });
                 }
                 break;
             case "input":
                 if (elementAttributes.indexOf("name") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "INPUT Element Missing Name", "ElementType": tagType });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "INPUT Element Missing Name", "ElementType": tagType, "ValidationId": 1 });
                 }
                 if (elementAttributes.indexOf("type") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "INPUT Element Missing type", "ElementType": tagType });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "INPUT Element Missing type", "ElementType": tagType, "ValidationId": 1 });
                 }
                 if (elementAttributes.indexOf("tabindex") > 0) {
                     if (tabindex + 1 == node.tabIndex) {
                         tabindex = node.tabIndex;
                     }
                     else {
-                        domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": tagType + " element breaked tab index", "ElementType": tagType });
+                        domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": tagType + " element breaked tab index", "ElementType": tagType, "ValidationId": 1 });
                     }
                     //if (node.tabindex > 0) {
 
@@ -59,12 +59,12 @@ function ValidateElement(domElement) {
                 break;
             case "form":
                 if (elementAttributes.indexOf("role") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "FORM Missing role attribute", "ElementType": tagType });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "FORM Missing role attribute", "ElementType": tagType, "ValidationId": 1 });
                 }
                 break;
             case "table":
                 if (elementAttributes.indexOf("role") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "FORM Missing role attribute", "ElementType": tagType });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "FORM Missing role attribute", "ElementType": tagType, "ValidationId": 1 });
                 }
                 break;
             default:
@@ -89,7 +89,7 @@ function validateColor(domElement) {
     //console.log(element);
     //console.log(window.getComputedStyle(element.Element));
     var nodeElement = domElement.Element;
-    console.log(nodeElement.parentNode);
+    //console.log(nodeElement.parentNode);
 
     var rgb_background = window.getComputedStyle(nodeElement).backgroundColor.replace(/[^\d,]/g, '').split(',');
 
@@ -103,13 +103,13 @@ function validateColor(domElement) {
     //console.log(rgb_color);
     //console.log(fullColorHex(rgb_background[0], rgb_background[1], rgb_background[2]));
     //console.log(fullColorHex(rgb_color[0], rgb_color[1], rgb_color[2]));
-    console.log(domElement.Element.tagName + " " +contrast(rgb_background, rgb_color));
+    //console.log(domElement.Element.tagName + " " +contrast(rgb_background, rgb_color));
     //var L1 = 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
     //var L2 = 0.2126 * rgbc[0] + 0.7152 * rgbc[1] + 0.0722 * rgbc[2];
     //console.log((L1 + 0.05) / (L2 + 0.05));
 
     if (contrast(rgb_background, rgb_color) < 4.5) {
-        domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "Color contrast not matching the recommended standards", "ElementType": domElement.Element.tagName });
+        domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "Color contrast not matching the recommended standards", "ElementType": domElement.Element.tagName, "ValidationId": 1 });
     }
 
     

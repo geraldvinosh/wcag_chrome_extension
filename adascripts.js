@@ -36,16 +36,17 @@ function ShowResults() {
 
     //bodyElement.style = "";
     bodyContent.style.display = "inline";
-    bodyContent.style.marginLeft = "300px";
+    bodyContent.style.marginLeft = "350px";
     bodyContent.style.position = "absolute";
     console.log("nonCompliantElements");
     console.log(nonCompliantElements);
-    for (var i = 0; i < nonCompliantElements.length; i++) {
-        var liError = "<li class=\"errorlist\"><button class=\"errorButton\" onclick=\"HighlightElement(" + nonCompliantElements[i].frameId + ",'" + nonCompliantElements[i].ErrorDetail.ElementXPath + "')\">" + nonCompliantElements[i].ErrorDetail.ErrorDescription + "</button></li>";
+    for (let i = 0; i < nonCompliantElements.length; i++) {
+        let validationReferenceContent = `<div id="validationReference${i}" class="wcagextensioncollapsed"></div>`;
+        let liError = "<li class=\"errorlist\"><span><button class=\"errorButton\" onclick=\"HighlightElement(" + i + "," + nonCompliantElements[i].frameId + ",'" + nonCompliantElements[i].ErrorDetail.ElementXPath + "')\">" + nonCompliantElements[i].ErrorDetail.ErrorDescription + "</button><button id=\"btnShowValidationReference" + i +"\" class=\"expandcollapsebutton\" onclick=\"ShowValidationReference("+i+","+ nonCompliantElements[i].ErrorDetail.ValidationId +")\">+</button></span>" + validationReferenceContent +"</li>";
         nonCompliantErrors = nonCompliantErrors + liError;
     }
 
-    var outputHTML = `<div style='background-color: rgb(251,246,221); color: black; width: 300px;display:inline;position:fixed;border:solid;padding-right:10px;z-index:999999;height:auto;height:100% !important;overflow:scroll';>  \
+    var outputHTML = `<div id="validationErrorsList" style='background-color: rgb(250,250,250) !important; color: black !important; width: 350px !important;display:inline !important;position:fixed !important; border:solid !important;padding-right:10px !important;z-index:999999 !important;height:auto !important;height:100% !important;overflow:scroll !important';>  \
     <br />\
         <h2 style='text-align:center;margin-top:10px'> WCAG Accessibilty Test Tool Report</h2>\
         <div style='margin-left:10px'>\
@@ -66,31 +67,52 @@ function ShowResults() {
         </div>
            <br /> <br /> <br />
         <style>\
-            li.errorlist {\
+            #validationErrorsList li.errorlist {\
                 background - color: bisque;\
                     padding: 3px;\
                     margin-bottom: 5px;\
                     border-bottom: solid 1px;\
                 }\
             
-            li button.errorButton{
+            #validationErrorsList li button.errorButton{
                 background-color:rgb(247,211,206);
                 border:0px;
                 text-align:left;
-                border-radius:5px;
                 text-indent:2px;
                 padding:3px;
                 width:100%
             }
-            @@keyframes blinker{
-                from {
-                    opacity: 1.0;
-                }
 
-                to {
-                    opacity: 0.0;
-                }
+            #validationErrorsList li span{
+                background-color:rgb(247,211,206);
+                border:0px;
+                border-radius:3px;
+                text-align:left;
+                text-indent:2px;
+                padding:3px;
+                width:100%;
+                display:flex !important;
             }
+
+            #validationErrorsList li .expandcollapsebutton{
+                width: 20px !important;
+                font-size: 1.25em !important;
+                font-weight: bold !important;
+                text-align:center;
+                color:red;
+                border:0px;
+                background-color:rgb(247,211,206);
+            }
+            .wcagextensioncollapsed{
+                display:none
+            }
+            .wcagextensionexpanded{
+                background-color: whitesmoke; 
+                border: 1px solid; 
+                border-color: burlywood;
+                display:visible
+            }
+
             .ada-error-blink {
                 border: red dashed 5px !important;
                 animation-name:blinker;
@@ -107,53 +129,31 @@ function ShowResults() {
                 padding-top: 10px;
                 padding-bottom: 10px;
             }
-            .tooltip {
-                position: relative;
-                display: inline-block;
-                border-bottom: 1px dotted black;
-            }
-
-            .tooltip .tooltiptext {
-                visibility: hidden;
-                width: 120px;
-                background-color: #555;
-                color: #fff;
-                text-align: center;
-                border-radius: 6px;
-                padding: 5px 0;
-                position: absolute;
-                z-index: 1;
-                bottom: 125%;
-                left: 50%;
-                margin-left: -60px;
-                opacity: 0;
-                transition: opacity 0.3s;
-            }
-
-            .tooltip .tooltiptext::after {
-                content: "";
-                position: absolute;
-                top: 100%;
-                left: 50%;
-                margin-left: -5px;
-                border-width: 5px;
-                border-style: solid;
-                border-color: #555 transparent transparent transparent;
-            }
-
-            .tooltip:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
-            }
             </style>\
         </div >\
        `;
 
     bodyElement.insertAdjacentHTML("afterbegin", outputHTML);
+    
     var scriptFunction = `
-
                var nonCompliantElementsCSV = ${JSON.stringify(nonCompliantElementsList)};
-               
+
+                function ShowValidationReference(indexId, validationId) {
+                    if (document.getElementById("validationReference" + indexId).getAttribute("class") == "wcagextensioncollapsed") {
+                        document.getElementById("validationReference" + indexId).setAttribute("class","wcagextensionexpanded");
+                        document.getElementById("btnShowValidationReference" + indexId).innerHTML = "-";
+
+                        window.postMessage({ type: "show_validation_detail", "validationId": validationId }, "*");
+                        setTimeout(function () {
+                            document.getElementById("validationReference" + indexId).innerHTML = window.sessionStorage["validationReferenceContent"];
+                        });
+                    }
+                    else if (document.getElementById("validationReference" + indexId).getAttribute("class") == "wcagextensionexpanded") {
+                        document.getElementById("validationReference" + indexId).setAttribute("class","wcagextensioncollapsed");
+                        document.getElementById("btnShowValidationReference" + indexId).innerHTML = "+";
+                    }
+                }
+
                 function DownloadReport(){
                     let jsonColumns = Object.keys(nonCompliantElementsCSV[0]);
                     console.log(jsonColumns);
@@ -199,14 +199,14 @@ function ShowResults() {
             }
 
                 
-                function HighlightElement(frameId, elementXpath) {
+                function HighlightElement(indexId, frameId, elementXpath) {
                  
                     if(frameId == 0){
                          var modifiedXpath = ModifyXpath(elementXpath);
-                        console.log('elementXpath');
-                         console.log(elementXpath);
-                         console.log('modifiedXpath');
-                         console.log(modifiedXpath);
+                        //console.log('elementXpath');
+                        // console.log(elementXpath);
+                        // console.log('modifiedXpath');
+                        // console.log(modifiedXpath);
                          var result = document.evaluate(modifiedXpath, document, null, XPathResult.ANY_TYPE, null);
                          var node = result.iterateNext();
                          console.log('node');
@@ -232,6 +232,9 @@ function ShowResults() {
                          //node.scrollIntoView();
                          //node.focus();
                     }
+
+                    //ShowValidationDetails(validationId);
+                    //$("#validationReference"+indexId).toggle(200);
                 }`
 
     //document.getElementsByClassName("errorButton").addEventListener("click", HighlightElemet);`;
