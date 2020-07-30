@@ -29,21 +29,21 @@ function ValidateElement(domElement) {
                 break;
             case "img":
                 if (elementAttributes.indexOf("alt") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "IMAGE Missing alt text", "ElementType": tagType,"ValidationId": 1 });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "IMAGE Missing alt text", "ElementType": tagType,"ValidationId": 2 });
 
                 }
                 break;
             case "label":
                 if (elementAttributes.indexOf("for") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "LABEL Missing for text", "ElementType": tagType, "ValidationId": 1 });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "LABEL Missing for text", "ElementType": tagType, "ValidationId": 3 });
                 }
                 break;
             case "input":
                 if (elementAttributes.indexOf("name") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "INPUT Element Missing Name", "ElementType": tagType, "ValidationId": 1 });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "INPUT Element Missing Name", "ElementType": tagType, "ValidationId": 3});
                 }
                 if (elementAttributes.indexOf("type") < 0) {
-                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "INPUT Element Missing type", "ElementType": tagType, "ValidationId": 1 });
+                    domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "INPUT Element Missing type", "ElementType": tagType, "ValidationId": 3 });
                 }
                 if (elementAttributes.indexOf("tabindex") > 0) {
                     if (tabindex + 1 == node.tabIndex) {
@@ -109,7 +109,7 @@ function validateColor(domElement) {
     //console.log((L1 + 0.05) / (L2 + 0.05));
 
     if (contrast(rgb_background, rgb_color) < 4.5) {
-        domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "Color contrast not matching the recommended standards", "ElementType": domElement.Element.tagName, "ValidationId": 1 });
+        domErrorElements.push({ "ElementXPath": domElement.ElementXPath, "ErrorDescription": "Color contrast not matching the recommended standards", "ElementType": domElement.Element.tagName, "ValidationId": 4 });
     }
 
     

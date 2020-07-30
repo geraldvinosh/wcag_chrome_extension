@@ -9,7 +9,7 @@ function CallDomAPIValidator(domWindowDocument, frameId) {
     if (frameId == null || frameId == undefined) {
         frameId = 0;
     }
-    
+
     var domElements = DOMManipulation.GetDOMElementsList(domWindowDocument, "");
     console.log("domElements");
     console.log(domElements);
@@ -20,7 +20,7 @@ function CallDomAPIValidator(domWindowDocument, frameId) {
     }
 
     console.log('Validation Complete');
-   
+
 }
 
 function ShowResults() {
@@ -42,7 +42,7 @@ function ShowResults() {
     console.log(nonCompliantElements);
     for (let i = 0; i < nonCompliantElements.length; i++) {
         let validationReferenceContent = `<div id="validationReference${i}" class="wcagextensioncollapsed"></div>`;
-        let liError = "<li class=\"errorlist\"><span><button class=\"errorButton\" onclick=\"HighlightElement(" + i + "," + nonCompliantElements[i].frameId + ",'" + nonCompliantElements[i].ErrorDetail.ElementXPath + "')\">" + nonCompliantElements[i].ErrorDetail.ErrorDescription + "</button><button id=\"btnShowValidationReference" + i +"\" class=\"expandcollapsebutton\" onclick=\"ShowValidationReference("+i+","+ nonCompliantElements[i].ErrorDetail.ValidationId +")\">+</button></span>" + validationReferenceContent +"</li>";
+        let liError = "<li class=\"errorlist\"><span><button class=\"errorButton\" onclick=\"HighlightElement(" + i + "," + nonCompliantElements[i].frameId + ",'" + nonCompliantElements[i].ErrorDetail.ElementXPath + "')\">" + nonCompliantElements[i].ErrorDetail.ErrorDescription + "</button><button id=\"btnShowValidationReference" + i + "\" class=\"expandcollapsebutton\" onclick=\"ShowValidationReference(" + i + "," + nonCompliantElements[i].ErrorDetail.ValidationId + ")\">+</button></span>" + validationReferenceContent + "</li>";
         nonCompliantErrors = nonCompliantErrors + liError;
     }
 
@@ -134,7 +134,7 @@ function ShowResults() {
        `;
 
     bodyElement.insertAdjacentHTML("afterbegin", outputHTML);
-    
+
     var scriptFunction = `
                var nonCompliantElementsCSV = ${JSON.stringify(nonCompliantElementsList)};
 
